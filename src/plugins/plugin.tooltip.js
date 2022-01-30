@@ -281,9 +281,9 @@ function alignY(size, yAlign, paddingAndSize) {
   // eslint-disable-next-line prefer-const
   let {y, height} = size;
   if (yAlign === 'top') {
-    y += paddingAndSize;
-  } else if (yAlign === 'bottom') {
     y -= height + paddingAndSize;
+  } else if (yAlign === 'bottom') {
+    y += paddingAndSize;
   } else {
     y -= (height / 2);
   }
@@ -610,7 +610,6 @@ export class Tooltip extends Element {
         y1 = y2 - caretSize;
         y3 = y2 + caretSize;
       }
-
       x3 = x1;
     } else {
       if (xAlign === 'left') {
@@ -621,7 +620,7 @@ export class Tooltip extends Element {
         x2 = this.caretX;
       }
 
-      if (yAlign === 'top') {
+      if (this.caretY < ptY) {
         y1 = ptY;
         y2 = y1 - caretSize;
 
@@ -858,7 +857,7 @@ export class Tooltip extends Element {
 
     ctx.beginPath();
     ctx.moveTo(x + topLeft, y);
-    if (yAlign === 'top') {
+    if (this.caretY < pt.y) {
       this.drawCaret(pt, ctx, tooltipSize, options);
     }
     ctx.lineTo(x + width - topRight, y);
@@ -868,7 +867,7 @@ export class Tooltip extends Element {
     }
     ctx.lineTo(x + width, y + height - bottomRight);
     ctx.quadraticCurveTo(x + width, y + height, x + width - bottomRight, y + height);
-    if (yAlign === 'bottom') {
+    if (this.caretY > pt.y) {
       this.drawCaret(pt, ctx, tooltipSize, options);
     }
     ctx.lineTo(x + bottomLeft, y + height);
